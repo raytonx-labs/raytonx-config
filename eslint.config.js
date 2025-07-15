@@ -1,21 +1,32 @@
 import js from "@eslint/js";
-import prettierConfig from "eslint-config-prettier";
-import pluginReact from "eslint-plugin-react";
-import { defineConfig } from "eslint/config";
-import globals from "globals";
-import tseslint from "typescript-eslint";
+import prettier from "eslint-config-prettier";
+import unusedImports from "eslint-plugin-unused-imports";
+import ts from "typescript-eslint";
 
-export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"], plugins: { js }, extends: ["js/recommended"] },
+export default [
+  js.configs.recommended,
+  ...ts.configs.recommended,
+  ...ts.configs.recommendedTypeChecked,
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
-    languageOptions: { globals: globals.browser },
-  },
-  tseslint.configs.recommended,
-  pluginReact.configs.flat.recommended,
-  {
+    files: ["**/*.ts", "**/*.tsx"],
+    languageOptions: {
+      parserOptions: {
+        project: "./tsconfig.json",
+        tsconfigRootDir: process.cwd(),
+      },
+    },
+    plugins: {
+      "unused-imports": unusedImports,
+    },
     rules: {
-      ...prettierConfig.rules,
+      "no-console": "warn",
+      "unused-imports/no-unused-imports": "warn",
+      "@typescript-eslint/no-floating-promises": "error",
     },
   },
-]);
+  {
+    rules: {
+      ...prettier,
+    },
+  },
+];
