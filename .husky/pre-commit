@@ -1,1 +1,3 @@
-pnpm eslint
+git pull
+
+npx lint-staged

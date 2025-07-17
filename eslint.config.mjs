@@ -22,13 +22,16 @@ export default tseslint.config(
       sourceType: "module",
       parserOptions: {
         projectService: true,
-        // @ts-ignore
-        tsconfigRootDir: import.meta.dirname,
+        tsconfigRootDir: new URL(".", import.meta.url).pathname,
       },
     },
   },
   {
     rules: {
+      "no-console": "error",
+      semi: ["error", "always"],
+      quotes: ["error", "single"],
+      "@typescript-eslint/no-floating-promises": "error",
       ...prettier.rules,
     },
   }
